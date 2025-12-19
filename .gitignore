@@ -1,0 +1,6 @@
+*.swu
+*.pem
+ttfile.bin
+usb_in.sh
+usb_out.sh
+
