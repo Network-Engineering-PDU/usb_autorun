@@ -167,6 +167,7 @@ run_script()
 
 exit_normal()
 {
+	update_notify_end "$BIN_FILE" failure
 	if [ -n $DEVBASE ]; then
 		/usr/bin/usb_mount.sh remove $DEVBASE
 	fi
@@ -176,6 +177,7 @@ exit_normal()
 
 exit_error()
 {
+	update_notify_end "$BIN_FILE" failure
 	if [ -n $DEVBASE ]; then
 		/usr/bin/usb_mount.sh remove $DEVBASE
 	fi
@@ -186,6 +188,7 @@ exit_error()
 
 exit_success()
 {
+	update_notify_end "$BIN_FILE" success
 	if [ -n $DEVBASE ]; then
 		/usr/bin/usb_mount.sh remove $DEVBASE
 	fi
@@ -194,9 +197,26 @@ exit_success()
 	exit 0
 }
 
+update_notify_begin()
+{
+	if [ -x /usr/bin/ttne-update-notify ]; then
+		/usr/bin/ttne-update-notify begin auto "$1" || exit_error
+	fi
+}
+
+update_notify_end()
+{
+	if [ -x /usr/bin/ttne-update-notify ] && [ -n "$1" ]; then
+		/usr/bin/ttne-update-notify end auto "$1" "$2"
+	fi
+}
+
+BIN_FILE=""
+
 do_execute()
 {
 	BIN_FILE=$1
+	update_notify_begin "$BIN_FILE"
 	echo "Checking CPIO"
 	CPIO_FILES=$(cpio -vt < $BIN_FILE)
 
