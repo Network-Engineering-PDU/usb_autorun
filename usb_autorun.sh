@@ -168,7 +168,7 @@ run_script()
 exit_normal()
 {
 	update_notify_end "$BIN_FILE" failure
-	if [ -n $DEVBASE ]; then
+	if [ -n "$DEVBASE" ]; then
 		/usr/bin/usb_mount.sh remove $DEVBASE
 	fi
 	rm -rf $WORKDIR
@@ -178,7 +178,7 @@ exit_normal()
 exit_error()
 {
 	update_notify_end "$BIN_FILE" failure
-	if [ -n $DEVBASE ]; then
+	if [ -n "$DEVBASE" ]; then
 		/usr/bin/usb_mount.sh remove $DEVBASE
 	fi
 	rm -rf $WORKDIR
@@ -189,7 +189,7 @@ exit_error()
 exit_success()
 {
 	update_notify_end "$BIN_FILE" success
-	if [ -n $DEVBASE ]; then
+	if [ -n "$DEVBASE" ]; then
 		/usr/bin/usb_mount.sh remove $DEVBASE
 	fi
 	rm -rf $WORKDIR
