@@ -192,7 +192,7 @@ exit_success()
 	if [ -n $DEVBASE ]; then
 		/usr/bin/usb_mount.sh remove $DEVBASE
 	fi
-	#rm -rf $WORKDIR
+	rm -rf $WORKDIR
 	gpio_cmd $GPIO_CMD_SUCCESS
 	exit 0
 }
@@ -359,4 +359,3 @@ case "${ACTION}" in
 		usage
 		;;
 esac
-
