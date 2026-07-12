@@ -168,7 +168,7 @@ run_script()
 exit_normal()
 {
 	update_notify_end "$BIN_FILE" failure
-	if [ -n $DEVBASE ]; then
+	if [ -n "$DEVBASE" ]; then
 		/usr/bin/usb_mount.sh remove $DEVBASE
 	fi
 	rm -rf $WORKDIR
@@ -178,7 +178,7 @@ exit_normal()
 exit_error()
 {
 	update_notify_end "$BIN_FILE" failure
-	if [ -n $DEVBASE ]; then
+	if [ -n "$DEVBASE" ]; then
 		/usr/bin/usb_mount.sh remove $DEVBASE
 	fi
 	rm -rf $WORKDIR
@@ -189,10 +189,14 @@ exit_error()
 exit_success()
 {
 	update_notify_end "$BIN_FILE" success
-	if [ -n $DEVBASE ]; then
+	if [ -n "$DEVBASE" ]; then
 		/usr/bin/usb_mount.sh remove $DEVBASE
+	else
+		# No physical device to trigger a "remove" event (web/OTA installs
+		# invoke us via `run`), so clean up the staging workdir here or it
+		# lingers and permanently trips UpdateCoordinator._usb_workdir_active().
+		rm -rf $WORKDIR
 	fi
-	#rm -rf $WORKDIR
 	gpio_cmd $GPIO_CMD_SUCCESS
 	exit 0
 }
